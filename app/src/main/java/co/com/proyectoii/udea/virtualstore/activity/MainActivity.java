@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -31,6 +32,10 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     ArrayList<Categoria> listCat = new ArrayList<Categoria>();
     Spinner spinner;
     private ProdsListAdapter listAdpter;
+    private Button loginBtn;
+    private ListView listViewProductos;
+    private Producto productoSeleccionado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +43,27 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         spinner = (Spinner) findViewById(R.id.spinnerCats);
+        loginBtn = (Button) findViewById(R.id.loginBtn);
+        listViewProductos = (ListView) findViewById(R.id.listProductos);
 
         // Se crea una tarea asincrona para obtener el listado de categorias desde el servidor DAJU
         CategoriasTask categoriasTask = new CategoriasTask();
         categoriasTask.execute();
 
         spinner.setOnItemSelectedListener(this);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirDialogLogin();
+            }
+        });
+        listViewProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+                abrirDialogDetalleProducto();
+            }
+        });
 
     }
 
@@ -83,6 +103,19 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void abrirDialogLogin(){
+        LoginFragment newFragment = LoginFragment
+                .newInstance(null);
+        newFragment.show(getFragmentManager(), "loginFragment");
+    }
+
+    private void abrirDialogDetalleProducto(){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("producto", productoSeleccionado);
+        DetalleProductoFragment newFragment = DetalleProductoFragment.newInstance(bundle);
+        newFragment.show(getFragmentManager(), "loginFragment");
     }
 
     /*
@@ -181,15 +214,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
             // Se crea el adaptador para la lista de los productos y se asigna al ListView
             listAdpter = new ProdsListAdapter(MainActivity.this, R.layout.producto_lista, productos);
-            ListView listaProductos = (ListView)findViewById(R.id.listProductos);
-            listaProductos.setAdapter(listAdpter);
+            listViewProductos.setAdapter(listAdpter);
 
-            listaProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //AQUI VA EL DIALOG CON EL DETALLE DEL PRODUCTO PARA AGREGAR AL CARRITO
-                }
-            });
             dialog.dismiss();
         }
     }

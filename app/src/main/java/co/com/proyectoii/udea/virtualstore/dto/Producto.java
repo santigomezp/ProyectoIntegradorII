@@ -1,13 +1,15 @@
 package co.com.proyectoii.udea.virtualstore.dto;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
 /**
  * Created by Alan on 12/5/2015.
  */
-public class Producto {
+public class Producto  implements Parcelable {
 
     /**
      * Identificador del producto
@@ -78,6 +80,17 @@ public class Producto {
         this.iconoPorDefecto = iconoPorDefecto;
     }
 
+    public Producto(Parcel in){
+        this.id = in.readString();
+        this.nombre = in.readString();
+        this.precio = in.readDouble();
+        this.descripcion = in.readString();
+        this.cantidad = in.readInt();
+        this.stock = in.readDouble();
+        this.idCategoria = in.readString();
+        this.iconoPorDefecto = in.readString();
+    }
+
     public String getId() {
         return this.id;
     }
@@ -103,7 +116,7 @@ public class Producto {
     }
 
     public String getDescripcion() {
-        return this.descripcion;
+        return this.descripcion.replace("&nbsp;","").trim().replaceAll("\\<.*?>","");
     }
 
     public void setDescripcion(String descripcion) {
@@ -165,4 +178,32 @@ public class Producto {
     public void setIconData(byte[] iconData) {
         this.iconData = iconData;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.nombre );
+        dest.writeDouble(this.precio);
+        dest.writeString(this.descripcion);
+        dest.writeInt(this.cantidad);
+        dest.writeDouble(this.stock);
+        dest.writeString(this.idCategoria );
+        dest.writeString(this.iconoPorDefecto );
+
+    }
+    public static final Parcelable.Creator<Producto> CREATOR = new Parcelable.Creator<Producto>() {
+        public Producto createFromParcel(Parcel in) {
+            return new Producto(in);
+        }
+
+        public Producto[] newArray(int size) {
+            return new Producto[size];
+        }
+    };
+    
 }
