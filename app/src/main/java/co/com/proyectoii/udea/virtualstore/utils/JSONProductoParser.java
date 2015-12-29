@@ -48,7 +48,6 @@ public class JSONProductoParser {
                     metaObj = metaArray.getJSONObject(j);
                     metaKey = metaObj.getString("meta_key");
                     metaValue = metaObj.getString("meta_value");
-
                     switch (metaKey){
                         case "_thumbnail_id":
                             producto.setIconoPorDefecto(jsonArray.getJSONObject(i).getString("image"));
@@ -69,7 +68,15 @@ public class JSONProductoParser {
                             producto.setStock(Double.parseDouble(metaValue));
                             break;
                         case "_product_image_gallery":
-                            producto.setImagenes(new ArrayList<String>(Arrays.asList(metaValue.split("\\s*,\\s*"))));
+                            JSONArray galleryArray = jsonArray.getJSONObject(i).getJSONArray("secondImages");
+                            if(galleryArray.isNull(0))
+                                break;
+                            ArrayList<String> gallery = new ArrayList<String>();
+                            int lenArrayGallery = galleryArray.length();
+                            for (int k=0;k<lenArrayGallery;k++){
+                                gallery.add(galleryArray.getString(k));
+                            }
+                            producto.setImagenes(gallery);
                             break;
                         default:
                             break;
