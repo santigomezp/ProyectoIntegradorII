@@ -115,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         Bundle bundle = new Bundle();
         bundle.putParcelable("producto", productoSeleccionado);
         DetalleProductoFragment newFragment = DetalleProductoFragment.newInstance(bundle);
-        newFragment.show(getFragmentManager(), "loginFragment");
+        newFragment.show(getFragmentManager(), "detalleProductoFragment");
     }
 
     /*
