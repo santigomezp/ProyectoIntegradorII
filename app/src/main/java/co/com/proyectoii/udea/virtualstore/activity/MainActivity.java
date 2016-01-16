@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import co.com.proyectoii.udea.virtualstore.R;
 import co.com.proyectoii.udea.virtualstore.dto.Categoria;
+import co.com.proyectoii.udea.virtualstore.dto.ItemCarrito;
 import co.com.proyectoii.udea.virtualstore.dto.Producto;
 import co.com.proyectoii.udea.virtualstore.utils.JSONProductoParser;
 import co.com.proyectoii.udea.virtualstore.utils.ProdsListAdapter;
@@ -35,6 +36,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     private Button loginBtn;
     private ListView listViewProductos;
     private Producto productoSeleccionado;
+    ArrayList<ItemCarrito> carrito = new ArrayList<>();
 
 
     @Override

@@ -19,7 +19,9 @@
             android:id="@+id/carritoBtn"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:theme="@style/ButtonAppTheme"
+            android:background="@drawable/boton_redondo" />
 
         <Button
             android:layout_width="wrap_content"
@@ -29,7 +31,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            android:background="@drawable/boton_redondo" />
 
         <TextView
             android:layout_width="wrap_content"
