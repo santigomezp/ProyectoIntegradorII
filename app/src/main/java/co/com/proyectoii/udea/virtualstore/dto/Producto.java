@@ -1,10 +1,11 @@
 package co.com.proyectoii.udea.virtualstore.dto;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Alan on 12/5/2015.
@@ -22,9 +23,19 @@ public class Producto  implements Parcelable {
     private String nombre;
 
     /**
-     * Precio del producto
+     * Precio por defecto del producto
      */
     private double precio;
+
+    /**
+     * Precio regular de la variacion del producto
+     */
+    private double precioRegular;
+
+    /**
+     * Precio con descuento de la variacion del producto
+     */
+    private double precioDescuento;
 
     /**
      * Descripcion del producto
@@ -60,6 +71,11 @@ public class Producto  implements Parcelable {
      * Listado de atributos
      */
     private String atributos;
+
+    /**
+     * Listado de precios por cada variacion
+     */
+    private ArrayList<String> variaciones;
 
     private byte[] iconData;
 
@@ -113,6 +129,14 @@ public class Producto  implements Parcelable {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public double getPrecioRegular() {
+        return this.precioRegular;
+    }
+
+    public double getPrecioDescuento() {
+        return this.precioDescuento;
     }
 
     public String getDescripcion() {
@@ -169,6 +193,47 @@ public class Producto  implements Parcelable {
 
     public void setAtributos(String atributos) {
         this.atributos = atributos;
+    }
+
+    public void setVariaciones(ArrayList<String> variaciones) {
+        this.variaciones = variaciones;
+    }
+
+    public ArrayList<String> getVariaciones() {
+        return variaciones;
+    }
+
+    public void setPreciosVars(String talla, String color){
+        String precioStr;
+        List<String> var;
+        ArrayList<String> vars;
+        int numVariaciones;
+
+        vars = this.getVariaciones();
+        numVariaciones = vars.size();
+        color = color.replace(" ", "-");
+        for(int i=0;i<numVariaciones;i++){
+            var =  Arrays.asList(vars.get(i).split(","));
+            if(var.get(0).equals(talla) && var.get(1).equals(color)){
+                try{
+                    precioStr = var.get(3); // El cuarto elemento (posicion 3) es el precio regular
+                    precioStr = precioStr.replace(".", "");
+                    precioStr = precioStr.replace(",", "");
+                    precioRegular = Double.parseDouble(precioStr);
+                    if (var.size()==5){
+                        precioStr = var.get(4); // El quinto elemento (posicion 4) es el precio con descuento
+                        precioStr = precioStr.replace(".", "");
+                        precioStr = precioStr.replace(",", "");
+                        precioDescuento = Double.parseDouble(precioStr);
+                    } else {
+                        precioDescuento = -1;
+                    }
+                    break;
+                }catch (Exception e){
+                    break;
+                }
+            }
+        }
     }
 
     public byte[] getIconData() {

@@ -5,12 +5,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import co.com.proyectoii.udea.virtualstore.dto.Producto;
 
 /**
- * Clase que contiene el metodo para decodificar el archivo JSON restornado por el servicio web de los
+ * Clase que contiene el metodo para decodificar el archivo JSON retornado por el servicio web de los
  * productos por categoria
  * Created by Alan on 12/5/2015.
  */
@@ -25,15 +24,17 @@ public class JSONProductoParser {
         if (jsonArray != null) {
             int lenArray = jsonArray.length();
             int lenArrayMeta;
+            int lenArrayVariaciones;
             String metaKey;
             String metaValue;
 
             for (int i=0;i<lenArray;i++){
                 producto = new Producto();
 
-                // Se obtiene la informacion post (principal) y meta (secundaria) del producto
+                // Se obtiene la informacion post (principal), meta (secundaria) del producto y sus variaciones de precios
                 JSONObject postObj = jsonArray.getJSONObject(i).getJSONObject("post");
                 JSONArray metaArray = jsonArray.getJSONObject(i).getJSONArray("meta");
+                JSONArray variacionesArray = jsonArray.getJSONObject(i).getJSONArray("variaciones");
 
                 // Se extrae de post la informacion de interes
                 producto.setId(postObj.getString("ID"));
@@ -81,6 +82,26 @@ public class JSONProductoParser {
                         default:
                             break;
                     }
+                }
+
+                // Se extrae los precios de cada variacion de cada producto
+                JSONObject variacionesObj;
+                lenArrayVariaciones = variacionesArray.length();
+                ArrayList<String> variaciones = new ArrayList<>();
+                String variacion = "";
+                for (int l=1;l<=lenArrayVariaciones;l++){
+                    variacionesObj = variacionesArray.getJSONObject(l - 1);
+                    metaValue = variacionesObj.getString("meta_value");
+                    variacion = variacion.concat(metaValue);
+                    variacion = variacion.concat(",");
+                    if (l%5==0){
+                        while (variacion.substring(variacion.length()-1, variacion.length()).equals(","))
+                            variacion = variacion.substring(0, variacion.length()-1);
+                        System.out.println(variacion);
+                        variaciones.add(variacion);
+                        variacion = "";
+                    }
+                    producto.setVariaciones(variaciones);
                 }
                 productos.add(producto);
             }
