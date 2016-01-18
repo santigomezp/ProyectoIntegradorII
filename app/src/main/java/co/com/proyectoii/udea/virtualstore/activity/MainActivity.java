@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     Spinner spinner;
     private ProdsListAdapter listAdpter;
     private Button loginBtn;
+    private Button carritoBtn;
     private ListView listViewProductos;
     private Producto productoSeleccionado;
     ArrayList<ItemCarrito> carrito = new ArrayList<>();
@@ -46,6 +47,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
         spinner = (Spinner) findViewById(R.id.spinnerCats);
         loginBtn = (Button) findViewById(R.id.loginBtn);
+        carritoBtn = (Button) findViewById(R.id.carritoBtn);
         listViewProductos = (ListView) findViewById(R.id.listProductos);
 
         // Se crea una tarea asincrona para obtener el listado de categorias desde el servidor DAJU
@@ -57,6 +59,15 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
                 abrirDialogLogin();
+            }
+        });
+        carritoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("carrito", carrito);
+                CarritoFragment newFragment = CarritoFragment.newInstance(bundle);
+                newFragment.show(getFragmentManager(), "carritoFragment");
             }
         });
         listViewProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {

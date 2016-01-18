@@ -35,7 +35,7 @@
             android:textSize="40dp" />
 
         <ImageView
-            android:layout_width="280dp"
+            android:layout_width="320dp"
             android:layout_height="300dp"
             android:id="@+id/imageViewDetalleProducto"
             android:contentDescription="Defecto" />
@@ -69,13 +69,59 @@
         android:id="@+id/textViewDestalleProductoDescripcion"
         android:textSize="15dp" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="Agregar a carrito"
-        android:id="@+id/btnAddCar"
-        android:layout_gravity="right"
-        android:background="@drawable/boton_redondo" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Precio"
+        android:id="@+id/textViewDetallerProductoPrecio" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Cantidad"
+            android:id="@+id/textView2" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editTextDetalleProductoCantidad"
+            android:layout_gravity="center_horizontal"
+            android:text="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Cancelar"
+            android:id="@+id/btnCancelarCar"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondo" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Agregar a carrito"
+            android:id="@+id/btnAddCar"
+            android:background="@drawable/boton_redondo"
+            android:layout_gravity="right"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>

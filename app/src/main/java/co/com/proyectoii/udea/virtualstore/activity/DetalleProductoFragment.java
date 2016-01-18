@@ -7,11 +7,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -43,6 +46,9 @@ public class DetalleProductoFragment extends DialogFragment {
     private Button btnImgSiguiente;
     private Button btnImgAtras;
     private int numeroImagen;
+    private Button btnCancelar;
+    private TextView textViewPrecio;
+    private EditText editTextCantidad;
 
     public static DetalleProductoFragment newInstance(Bundle argumentos){
        DetalleProductoFragment fragment = new DetalleProductoFragment();
@@ -74,10 +80,13 @@ public class DetalleProductoFragment extends DialogFragment {
         listaTallas = new ArrayList<>();
         rootView = inflater.inflate(R.layout.fragment_detalle_producto, container, false);
         textViewNombreProducto = (TextView) rootView.findViewById(R.id.textViewDetalleProductoNombre);
+        textViewPrecio = (TextView) rootView.findViewById(R.id.textViewDetallerProductoPrecio);
+        editTextCantidad = (EditText) rootView.findViewById(R.id.editTextDetalleProductoCantidad);
         textViewDescripcionProducto = (TextView) rootView.findViewById(R.id.textViewDestalleProductoDescripcion);
         spinnerTalla = (Spinner) rootView.findViewById(R.id.spinnerTalla);
         spinnerColor = (Spinner) rootView.findViewById(R.id.spinnerColor);
         imageViewImagen = (ImageView) rootView.findViewById(R.id.imageViewDetalleProducto);
+        btnCancelar = (Button) rootView.findViewById(R.id.btnCancelarCar);
         btnAdd = (Button) rootView.findViewById(R.id.btnAddCar);
                 textViewNombreProducto.setText(producto.getNombre());
         btnImgSiguiente = (Button) rootView.findViewById(R.id.btnImgSiguiente);
@@ -112,6 +121,32 @@ public class DetalleProductoFragment extends DialogFragment {
         spinnerColor.setAdapter(dataAdapter2);
         descargarImagen(producto.getIconoPorDefecto());
 
+        spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (spinnerTalla.getSelectedItem() != null) {
+                    producto.setPreciosVars(spinnerTalla.getSelectedItem().toString(), spinnerColor.getSelectedItem().toString());
+                    if(producto.getPrecioDescuento()!=0){
+                        textViewPrecio.setText("" + producto.getPrecioDescuento());
+                    }else{
+                        if(producto.getPrecioRegular()!=0){
+                            textViewPrecio.setText("" + producto.getPrecioRegular());
+                        }else{
+                            textViewPrecio.setText("" + producto.getPrecio());
+                        }
+                    }
+
+                } else {
+                    Toast.makeText(contextoActivity, "Elija primero una talla ", Toast.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +154,15 @@ public class DetalleProductoFragment extends DialogFragment {
                 itemCarrito.setProducto(producto);
                 itemCarrito.setTalla(spinnerTalla.getSelectedItem().toString());
                 itemCarrito.setColor(spinnerColor.getSelectedItem().toString());
+                itemCarrito.setPrecio(Double.parseDouble(textViewPrecio.getText().toString()));
+                itemCarrito.setCantidad(Integer.parseInt(editTextCantidad.getText().toString()));
                 contextoActivity.carrito.add(itemCarrito);
+                dismiss();
+            }
+        });
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dismiss();
             }
         });
