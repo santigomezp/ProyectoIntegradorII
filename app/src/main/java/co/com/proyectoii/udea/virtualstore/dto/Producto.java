@@ -211,6 +211,18 @@ public class Producto  implements Parcelable {
 
         vars = this.getVariaciones();
         numVariaciones = vars.size();
+        if (talla.charAt(talla.length()-1)==' ') {
+            talla = talla.substring(0, talla.length()-1);
+        }
+        if (talla.charAt(0)==' ') {
+            talla = talla.substring(1, talla.length());
+        }
+        if (color.charAt(color.length()-1)==' ') {
+            color = color.substring(0, color.length()-1);
+        }
+        if (color.charAt(0)==' ') {
+            color = color.substring(1, color.length());
+        }
         color = color.replace(" ", "-");
         for(int i=0;i<numVariaciones;i++){
             var =  Arrays.asList(vars.get(i).split(","));

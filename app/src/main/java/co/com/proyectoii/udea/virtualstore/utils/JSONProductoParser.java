@@ -60,6 +60,8 @@ public class JSONProductoParser {
                             producto.setAtributos(metaValue);
                             break;
                         case "_price":
+                            metaValue = metaValue.replace(".", "");
+                            metaValue = metaValue.replace(",", "");
                             producto.setPrecio(Double.parseDouble(metaValue));
                             break;
                         case "_stock":

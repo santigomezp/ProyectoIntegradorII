@@ -125,8 +125,8 @@ public class DetalleProductoFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (spinnerTalla.getSelectedItem() != null) {
-                    producto.setPreciosVars(spinnerTalla.getSelectedItem().toString(), spinnerColor.getSelectedItem().toString());
-                    if(producto.getPrecioDescuento()!=0){
+                    producto.setPreciosVars(spinnerTalla.getSelectedItem().toString().toLowerCase(), spinnerColor.getSelectedItem().toString().toLowerCase());
+                    if(producto.getPrecioDescuento()!=0 && producto.getPrecioDescuento()!=-1){
                         textViewPrecio.setText("" + producto.getPrecioDescuento());
                     }else{
                         if(producto.getPrecioRegular()!=0){
