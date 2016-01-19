@@ -33,11 +33,11 @@ public class ItemCarrito implements Parcelable{
     }
 
     public String getTalla() {
-        return talla;
+        return this.talla;
     }
 
     public void setTalla(String talla) {
-        talla = talla;
+        this.talla = talla;
     }
 
     public String getColor() {
@@ -45,11 +45,11 @@ public class ItemCarrito implements Parcelable{
     }
 
     public void setColor(String color) {
-        color = color;
+        this.color = color;
     }
 
     public int getCantidad() {
-        return cantidad;
+        return this.cantidad;
     }
 
     public void setCantidad(int cantidad) {

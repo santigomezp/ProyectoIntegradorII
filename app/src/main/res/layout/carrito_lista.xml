@@ -10,6 +10,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/white" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="39dp"
@@ -26,63 +31,72 @@
             android:layout_margin="5dp"
             android:contentDescription="@string/hello_world" />
 
-        <TextView
-            android:id="@+id/nombreProdTVCarrito"
-            android:editable="false"
-            android:cursorVisible="false"
-            android:longClickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
-            android:layout_marginLeft="5dp"
-            android:text="Tipo Polo Hugo Boss Fondo Entero"
-            android:textSize="10sp"
-            android:textColor="#1919A3"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/precioTVCarrito"
-            android:editable="false"
-            android:cursorVisible="false"
-            android:longClickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Precio"
-            android:textSize="10sp"
-            android:textColor="#1919A3"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/nombreProdTVCarrito"
+                android:editable="false"
+                android:cursorVisible="false"
+                android:longClickable="false"
+                android:layout_width="match_parent"
+                android:layout_height="19dp"
+                android:layout_marginLeft="5dp"
+                android:text="Tipo Polo Hugo Boss Fondo Entero"
+                android:textSize="10sp"
+                android:textColor="#1919A3"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/cantidadTVCarrito"
-            android:editable="false"
-            android:cursorVisible="false"
-            android:longClickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Cantidad"
-            android:textSize="10sp"
-            android:textColor="#1919A3"
-            android:textStyle="bold" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="19dp"
+                android:background="#99D6D6">
 
-        <TextView
-            android:id="@+id/totalTVCarrito"
-            android:editable="false"
-            android:cursorVisible="false"
-            android:longClickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Total"
-            android:textSize="10sp"
-            android:textColor="#1919A3"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/precioTVCarrito"
+                    android:editable="false"
+                    android:cursorVisible="false"
+                    android:longClickable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Precio"
+                    android:textSize="10sp"
+                    android:textColor="#1919A3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cantidadTVCarrito"
+                    android:editable="false"
+                    android:cursorVisible="false"
+                    android:longClickable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Cantidad"
+                    android:textSize="10sp"
+                    android:textColor="#1919A3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/totalTVCarrito"
+                    android:editable="false"
+                    android:cursorVisible="false"
+                    android:longClickable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Total"
+                    android:textSize="10sp"
+                    android:textColor="#1919A3"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/white" />
 
 </LinearLayout>

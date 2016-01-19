@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="co.com.proyectoii.udea.virtualstore.activity.LoginFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:minWidth="360dp">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -28,5 +29,6 @@
         android:text="Login"
         android:id="@+id/buttonLogin"
         android:layout_gravity="center_horizontal|right"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="@drawable/boton_redondo" />
 </LinearLayout>

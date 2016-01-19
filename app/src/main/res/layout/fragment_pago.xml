@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context="co.com.proyectoii.udea.virtualstore.activity.PagoFragment"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:minWidth="400dp">
 
     <!-- TODO: Update blank fragment layout -->
     <EditText
@@ -12,40 +13,68 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText"
-        android:hint="Ingrese nombre y apellidos" />
+        android:id="@+id/editTextNombres"
+        android:hint="Ingrese nombres" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:hint="Ingrese Dirección" />
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextApellidos"
+        android:hint="Ingrese Apellidos" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextDireccion1"
+        android:hint="Ingrese Dirección 1" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextDireccion2"
+        android:hint="Ingrese Dirección 2" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="phone"
         android:ems="10"
-        android:id="@+id/editText3"
+        android:id="@+id/editTextTelefono"
         android:hint="Ingrese Telefono" />
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Seleccione Banco"
-        android:layout_weight="0.03" />
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/editTextEmail"
+        android:hint="Ingrese email" />
 
-    <Spinner
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner" />
+        android:layout_gravity="center_horizontal">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PSE"
-        android:id="@+id/button"
-        android:layout_gravity="right"
-        android:background="@drawable/boton_redondo" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Contra Entrega"
+            android:id="@+id/btnContraEntrega"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondo" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PSE"
+            android:id="@+id/btnPse"
+            android:layout_gravity="right"
+            android:background="@drawable/boton_redondo"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:nestedScrollingEnabled="false"
-    android:minWidth="400dp">
+    android:minWidth="360dp">
 
 
 
@@ -35,7 +35,7 @@
             android:textSize="40dp" />
 
         <ImageView
-            android:layout_width="320dp"
+            android:layout_width="250dp"
             android:layout_height="300dp"
             android:id="@+id/imageViewDetalleProducto"
             android:contentDescription="Defecto" />
@@ -89,7 +89,7 @@
             android:id="@+id/textView2" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
