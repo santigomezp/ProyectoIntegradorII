@@ -88,7 +88,7 @@ public class DetalleProductoFragment extends DialogFragment {
         imageViewImagen = (ImageView) rootView.findViewById(R.id.imageViewDetalleProducto);
         btnCancelar = (Button) rootView.findViewById(R.id.btnCancelarCar);
         btnAdd = (Button) rootView.findViewById(R.id.btnAddCar);
-                textViewNombreProducto.setText(producto.getNombre());
+        textViewNombreProducto.setText(producto.getNombre());
         btnImgSiguiente = (Button) rootView.findViewById(R.id.btnImgSiguiente);
         btnImgAtras = (Button) rootView.findViewById(R.id.btnImgAtras);
         textViewNombreProducto.setText(producto.getNombre());
@@ -96,57 +96,63 @@ public class DetalleProductoFragment extends DialogFragment {
         imagenes = producto.getImagenes();
         int posisionIni = producto.getAtributos().indexOf("Tallas");
         int posisionFinal = producto.getAtributos().indexOf(";s:8:");
-        String tallas = producto.getAtributos().substring(posisionIni + 26, posisionFinal - 2);
-        posisionIni = producto.getAtributos().indexOf("Colores");
+        if (posisionFinal == -1 & posisionIni == -1) {
+            spinnerColor.setVisibility(View.GONE);
+            spinnerTalla.setVisibility(View.GONE);
+        } else {
 
-        String colores = producto.getAtributos().substring(posisionIni+27,producto.getAtributos().length()-1);
-        posisionFinal = colores.indexOf(";s:8:");
-        colores = colores.substring(0, posisionFinal - 1);
-        StringTokenizer st = new StringTokenizer(tallas,"|");
-        while (st.hasMoreTokens()) {
-            listaTallas.add(st.nextToken());
-        }
-        st = new StringTokenizer(colores,"|");
-        while (st.hasMoreTokens()) {
-            listaColores.add(st.nextToken());
-        }
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(contextoActivity.getBaseContext(),
-                android.R.layout.simple_spinner_item, listaTallas);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTalla.setAdapter(dataAdapter);
-        ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(contextoActivity.getBaseContext(),
-                android.R.layout.simple_spinner_item, listaColores);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerColor.setAdapter(dataAdapter2);
-        descargarImagen(producto.getIconoPorDefecto());
+            String tallas = producto.getAtributos().substring(posisionIni + 26, posisionFinal - 2);
+            posisionIni = producto.getAtributos().indexOf("Colores");
 
-        spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (spinnerTalla.getSelectedItem() != null) {
-                    producto.setPreciosVars(spinnerTalla.getSelectedItem().toString().toLowerCase(), spinnerColor.getSelectedItem().toString().toLowerCase());
-                    if(producto.getPrecioDescuento()!=0 && producto.getPrecioDescuento()!=-1){
-                        textViewPrecio.setText("" + producto.getPrecioDescuento());
-                    }else{
-                        if(producto.getPrecioRegular()!=0){
-                            textViewPrecio.setText("" + producto.getPrecioRegular());
-                        }else{
-                            textViewPrecio.setText("" + producto.getPrecio());
+            String colores = producto.getAtributos().substring(posisionIni + 27, producto.getAtributos().length() - 1);
+            posisionFinal = colores.indexOf(";s:8:");
+            colores = colores.substring(0, posisionFinal - 1);
+            StringTokenizer st = new StringTokenizer(tallas, "|");
+            while (st.hasMoreTokens()) {
+                listaTallas.add(st.nextToken());
+            }
+            st = new StringTokenizer(colores, "|");
+            while (st.hasMoreTokens()) {
+                listaColores.add(st.nextToken());
+            }
+
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(contextoActivity.getBaseContext(),
+                    android.R.layout.simple_spinner_item, listaTallas);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerTalla.setAdapter(dataAdapter);
+            ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(contextoActivity.getBaseContext(),
+                    android.R.layout.simple_spinner_item, listaColores);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerColor.setAdapter(dataAdapter2);
+            descargarImagen(producto.getIconoPorDefecto());
+
+            spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (spinnerTalla.getSelectedItem() != null) {
+                        producto.setPreciosVars(spinnerTalla.getSelectedItem().toString().toLowerCase(), spinnerColor.getSelectedItem().toString().toLowerCase());
+                        if (producto.getPrecioDescuento() != 0 && producto.getPrecioDescuento() != -1) {
+                            textViewPrecio.setText("" + producto.getPrecioDescuento());
+                        } else {
+                            if (producto.getPrecioRegular() != 0) {
+                                textViewPrecio.setText("" + producto.getPrecioRegular());
+                            } else {
+                                textViewPrecio.setText("" + producto.getPrecio());
+                            }
                         }
+
+                    } else {
+                        Toast.makeText(contextoActivity, "Elija primero una talla ", Toast.LENGTH_LONG);
                     }
-
-                } else {
-                    Toast.makeText(contextoActivity, "Elija primero una talla ", Toast.LENGTH_LONG);
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
-
+                }
+            });
+        }
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

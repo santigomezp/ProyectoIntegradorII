@@ -3,12 +3,15 @@ package co.com.proyectoii.udea.virtualstore.activity;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -45,6 +48,7 @@ public class PagoFragment extends DialogFragment {
     EditText editTextEmail;
     Button btnContraEntrega;
     Button btnPse;
+    JSONObject json;
 
     public PagoFragment() {
         // Required empty public constructor
@@ -68,49 +72,53 @@ public class PagoFragment extends DialogFragment {
         btnContraEntrega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject jsonaux = new JSONObject();
-                JSONObject json = new JSONObject();
-                JSONArray arr = new JSONArray();
+                if (validarFormulario()) {
+                    JSONObject jsonaux = new JSONObject();
+                    json = new JSONObject();
+                    JSONArray arr = new JSONArray();
 
-                try {
-                    json.put("firstName", editTextNombres.getText().toString());
-                    json.put("lastName", editTextApellidos.getText().toString());
-                    json.put("date", getFechaHora());
-                    json.put("company", "UdeA");
-                    json.put("address1", editTextDireccion1.getText().toString());
-                    json.put("address2", editTextDireccion2.getText().toString());
-                    json.put("city", "Medellin");
-                    json.put("state", "Antioquia");
-                    json.put("email", editTextEmail.getText().toString());
-                    json.put("phone", editTextTelefono.getText().toString());
-                    json.put("paym", "cod");
-                    json.put("discount", "0");
-                    json.put("shippingTax", "0");
+                    try {
+                        json.put("firstName", editTextNombres.getText().toString());
+                        json.put("lastName", editTextApellidos.getText().toString());
+                        json.put("date", getFechaHora());
+                        json.put("company", "UdeA");
+                        json.put("address1", editTextDireccion1.getText().toString());
+                        json.put("address2", editTextDireccion2.getText().toString());
+                        json.put("city", "Medellin");
+                        json.put("state", "Antioquia");
+                        json.put("email", editTextEmail.getText().toString());
+                        json.put("phone", editTextTelefono.getText().toString());
+                        json.put("paym", "cod");
+                        json.put("discount", "0");
+                        json.put("shippingTax", "0");
                         json.put("recorded", "yes");
-                    double totalPagar = 0;
-                    for (ItemCarrito item : contextoActivity.carrito){
-                        jsonaux.put("name", item.getProducto().getNombre());
-                        jsonaux.put("quantity", String.valueOf(item.getCantidad()));
-                        jsonaux.put("productID", item.getProducto().getId());
-                        jsonaux.put("varID", "0");
-                        jsonaux.put("lineTotal", "50");
-                        jsonaux.put("talla", item.getTalla());
-                        jsonaux.put("color", item.getColor());
-                        arr.put(jsonaux);
-                        totalPagar= totalPagar+(item.getPrecio()*item.getCantidad());
+                        double totalPagar = 0;
+                        for (ItemCarrito item : contextoActivity.carrito) {
+                            jsonaux.put("name", item.getProducto().getNombre());
+                            jsonaux.put("quantity", String.valueOf(item.getCantidad()));
+                            jsonaux.put("productID", item.getProducto().getId());
+                            jsonaux.put("varID", "0");
+                            jsonaux.put("lineTotal", "50");
+                            jsonaux.put("talla", item.getTalla());
+                            jsonaux.put("color", item.getColor());
+                            arr.put(jsonaux);
+                            totalPagar = totalPagar + (item.getPrecio() * item.getCantidad());
+                        }
+
+
+                        //Se agrega listado de productos
+                        json.put("orderTotal", totalPagar);
+                        json.put("item", arr);
+
+                        new CheckoutTask().execute();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-
-                    //Se agrega listado de productos
-                    json.put("orderTotal", totalPagar);
-                    json.put("item", arr);
-
-                    uploadUrl("comprar_carrito",json.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+            else{
+                Toast.makeText(contextoActivity,"Faltan campos por ingresar o los campos son demasiado cortos", Toast.LENGTH_LONG);
             }
-        });
+        }});
 
         return rootView;
     }
@@ -138,10 +146,39 @@ public class PagoFragment extends DialogFragment {
         return tiempo;
     }
 
+    private class CheckoutTask extends AsyncTask<Void, Void, Void> {
+        String resultado;
+        private ProgressDialog dialog = new ProgressDialog(contextoActivity);
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Realizando pedido...");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            resultado = uploadUrl("comprar_carrito",json.toString());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            dialog.dismiss();
+            if(resultado.equals("1")){
+                dismiss();
+                Toast.makeText(contextoActivity,"pedido realizado con exito",Toast.LENGTH_LONG);
+            }else{
+                Toast.makeText(contextoActivity,"No se pudo guardar su pedido intente nuevamente",Toast.LENGTH_LONG);
+            }
+
+        }
+    }
+
     private String uploadUrl(String myurl,String json){
         try {
             OkHttpClient client = new OkHttpClient();
-            client.setConnectTimeout(30, TimeUnit.SECONDS);
+            client.setConnectTimeout(120, TimeUnit.SECONDS);
             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
             Request request = new Request.Builder()
                     .url(URL_BASE + myurl)
@@ -153,6 +190,26 @@ public class PagoFragment extends DialogFragment {
             return "-1";
         }
     }
-
+    private boolean validarFormulario(){
+        if(editTextNombres.getText().length()<3){
+            return false;
+        }
+        if(editTextApellidos.getText().length()<3){
+            return false;
+        }
+        if(editTextDireccion1.getText().length()<3){
+            return false;
+        }
+        if(editTextDireccion2.getText().length()<3){
+            return false;
+        }
+        if(editTextEmail.getText().length()<3){
+            return false;
+        }
+        if(editTextTelefono.getText().length()<7){
+            return false;
+        }
+        return true;
+    }
 
 }

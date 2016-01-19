@@ -65,6 +65,7 @@ public class CarritoFragment extends DialogFragment {
             public void onClick(View view) {
                 PagoFragment newFragment = new PagoFragment();
                 newFragment.show(getFragmentManager(), "pagoFragment");
+                dismiss();
             }
         });
         double totalPagar = 0;

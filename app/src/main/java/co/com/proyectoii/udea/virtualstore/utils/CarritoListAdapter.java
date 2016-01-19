@@ -62,14 +62,18 @@ public class CarritoListAdapter extends ArrayAdapter<ItemCarrito> {
         // Se carga la imagen dinamicamente, se muestra ic_placeholder miestras carga, o ic_error_fallback si hay problemas
         Picasso.with(context).load(new ProductosHTTPClient().getURI(holder.producto.getProducto().getIconoPorDefecto()))
                 .placeholder(R.drawable.ic_placeholder).error(R.drawable.ic_error_fallback)
-                .resize(50,50).into(holder.imagen);
+                .resize(50, 50).into(holder.imagen);
         //holder.imagen.setImageBitmap(((new ItemCarritosHTTPClient()).getImage(holder.producto.getIconoPorDefecto())));
+        if (holder.producto.getColor() == null) {
+            holder.nombre.setText(holder.producto.getProducto().getNombre());
+        } else {
+            holder.nombre.setText(holder.producto.getProducto().getNombre() + " " + holder.producto.getColor() + holder.producto.getTalla());
+        }
 
-        holder.nombre.setText(holder.producto.getProducto().getNombre()+" "+holder.producto.getColor()+holder.producto.getTalla());
-        holder.precio.setText(" Precio :"+String.valueOf(holder.producto.getPrecio()));
-        holder.cantidad.setText(" Cantidad :"+String.valueOf(holder.producto.getCantidad()));
-        double total = (holder.producto.getPrecio()*holder.producto.getCantidad());
-        holder.total.setText(" Total :"+String.valueOf(total));
+        holder.precio.setText(" Precio :" + String.valueOf(holder.producto.getPrecio()));
+        holder.cantidad.setText(" Cantidad :" + String.valueOf(holder.producto.getCantidad()));
+        double total = (holder.producto.getPrecio() * holder.producto.getCantidad());
+        holder.total.setText(" Total :" + String.valueOf(total));
 
     }
 
