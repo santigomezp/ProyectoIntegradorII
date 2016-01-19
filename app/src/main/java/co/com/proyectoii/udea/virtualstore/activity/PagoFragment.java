@@ -116,7 +116,7 @@ public class PagoFragment extends DialogFragment {
                     }
                 }
             else{
-                Toast.makeText(contextoActivity,"Faltan campos por ingresar o los campos son demasiado cortos", Toast.LENGTH_LONG);
+                Toast.makeText(contextoActivity,"Faltan campos por ingresar o los campos son demasiado cortos", Toast.LENGTH_LONG).show();
             }
         }});
 
@@ -167,9 +167,9 @@ public class PagoFragment extends DialogFragment {
             dialog.dismiss();
             if(resultado.equals("1")){
                 dismiss();
-                Toast.makeText(contextoActivity,"pedido realizado con exito",Toast.LENGTH_LONG);
+                Toast.makeText(contextoActivity,"pedido realizado con exito",Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(contextoActivity,"No se pudo guardar su pedido intente nuevamente",Toast.LENGTH_LONG);
+                Toast.makeText(contextoActivity,"No se pudo guardar su pedido intente nuevamente",Toast.LENGTH_LONG).show();
             }
 
         }

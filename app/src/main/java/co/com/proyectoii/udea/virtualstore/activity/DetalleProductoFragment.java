@@ -110,7 +110,10 @@ public class DetalleProductoFragment extends DialogFragment {
             colores = colores.substring(0, posisionFinal - 1);
             StringTokenizer st = new StringTokenizer(tallas, "|");
             while (st.hasMoreTokens()) {
-                listaTallas.add(st.nextToken());
+                String token = st.nextToken();
+                if(!token.equals(" ")) {
+                    listaTallas.add(token);
+                }
             }
             st = new StringTokenizer(colores, "|");
             while (st.hasMoreTokens()) {
@@ -143,7 +146,7 @@ public class DetalleProductoFragment extends DialogFragment {
                         }
 
                     } else {
-                        Toast.makeText(contextoActivity, "Elija primero una talla ", Toast.LENGTH_LONG);
+                        Toast.makeText(contextoActivity, "Elija primero una talla ", Toast.LENGTH_LONG).show();
                     }
                 }
 

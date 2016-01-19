@@ -37,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     private Button carritoBtn;
     private ListView listViewProductos;
     private Producto productoSeleccionado;
+    public String usuario=null;
     ArrayList<ItemCarrito> carrito = new ArrayList<>();
 
 
@@ -102,9 +103,18 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (usuario!=null){
+            loginBtn.setText("Hola "+usuario);
+            loginBtn.setClickable(false);
+        }
+    }
+
     /*
-     * Cuando se selecciona un elemento del spinner
-     */
+         * Cuando se selecciona un elemento del spinner
+         */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Se crea tarea asincrona para la carga del listado de productos asociados a la categoria

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class CarritoFragment extends DialogFragment {
     Button btnPagar;
     ArrayList<ItemCarrito> carrito = new ArrayList<>();
     private ListView listViewCarrito;private CarritoListAdapter listAdpter;
+    TextView textViewTotal;
 
     public static CarritoFragment newInstance(Bundle argumentos){
         CarritoFragment fragment = new CarritoFragment();
@@ -46,7 +48,7 @@ public class CarritoFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_carrito, container, false);
         listViewCarrito = (ListView)rootView.findViewById(R.id.listViewCarrito);
-        TextView textViewTotal= (TextView)rootView.findViewById(R.id.textViewCarritoTotal);
+        textViewTotal= (TextView)rootView.findViewById(R.id.textViewCarritoTotal);
         btnPagar = (Button) rootView.findViewById(R.id.buttonCarritoPagar);
         listAdpter = new CarritoListAdapter(contextoActivity, R.layout.carrito_lista, carrito);
         listViewCarrito.setAdapter(listAdpter);
@@ -57,22 +59,23 @@ public class CarritoFragment extends DialogFragment {
                 contextoActivity.carrito = new ArrayList<ItemCarrito>();
                 contextoActivity.carrito.addAll(carrito);
                 listAdpter.notifyDataSetChanged();
+                calcularTotalPagar();
                 return true;
             }
         });
         btnPagar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(carrito.size()>0){
                 PagoFragment newFragment = new PagoFragment();
                 newFragment.show(getFragmentManager(), "pagoFragment");
-                dismiss();
+                dismiss();}
+                else{
+                    Toast.makeText(contextoActivity,"El carrito esta vació",Toast.LENGTH_LONG).show();
+                }
             }
         });
-        double totalPagar = 0;
-        for (ItemCarrito item : carrito){
-            totalPagar= totalPagar+(item.getPrecio()*item.getCantidad());
-        }
-        textViewTotal.setText(" Total a Pagar : " +String.valueOf(totalPagar));
+        calcularTotalPagar();
         return rootView;
     }
 
@@ -80,5 +83,12 @@ public class CarritoFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         contextoActivity = (MainActivity)activity;
+    }
+    private void calcularTotalPagar(){
+        double totalPagar = 0;
+        for (ItemCarrito item : carrito){
+            totalPagar= totalPagar+(item.getPrecio()*item.getCantidad());
+        }
+        textViewTotal.setText(" Total a Pagar : " +String.valueOf(totalPagar));
     }
 }
