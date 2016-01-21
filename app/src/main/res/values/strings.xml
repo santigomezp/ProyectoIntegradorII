@@ -6,4 +6,23 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array
+        name="bancos">
+
+    <item>Banco de Bogotá</item>
+    <item>    Banco Popular</item>
+    <item> Banco CorpBanca</item>
+    <item>   Bancolombia</item>
+    <item>   Citibank</item>
+    <item>   Banco GNB Sudameris</item>
+    <item>   BBVA Colombia</item>
+    <item>   Banco de Occidente</item>
+    <item>   BCSC S.A.</item>
+    <item>   Davivienda</item>
+    <item>   Colpatria Red Multibanca</item>
+    <item>    Banagrario</item>
+    <item>   AV Villas</item>
+
+    </string-array>
+
 </resources>

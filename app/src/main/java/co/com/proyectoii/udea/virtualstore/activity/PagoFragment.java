@@ -2,8 +2,10 @@ package co.com.proyectoii.udea.virtualstore.activity;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import co.com.proyectoii.udea.virtualstore.R;
@@ -73,52 +76,49 @@ public class PagoFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (validarFormulario()) {
-                    JSONObject jsonaux = new JSONObject();
-                    json = new JSONObject();
-                    JSONArray arr = new JSONArray();
-
-                    try {
-                        json.put("firstName", editTextNombres.getText().toString());
-                        json.put("lastName", editTextApellidos.getText().toString());
-                        json.put("date", getFechaHora());
-                        json.put("company", "UdeA");
-                        json.put("address1", editTextDireccion1.getText().toString());
-                        json.put("address2", editTextDireccion2.getText().toString());
-                        json.put("city", "Medellin");
-                        json.put("state", "Antioquia");
-                        json.put("email", editTextEmail.getText().toString());
-                        json.put("phone", editTextTelefono.getText().toString());
-                        json.put("paym", "cod");
-                        json.put("discount", "0");
-                        json.put("shippingTax", "0");
-                        json.put("recorded", "yes");
-                        double totalPagar = 0;
-                        for (ItemCarrito item : contextoActivity.carrito) {
-                            jsonaux.put("name", item.getProducto().getNombre());
-                            jsonaux.put("quantity", String.valueOf(item.getCantidad()));
-                            jsonaux.put("productID", item.getProducto().getId());
-                            jsonaux.put("varID", "0");
-                            jsonaux.put("lineTotal", "50");
-                            jsonaux.put("talla", item.getTalla());
-                            jsonaux.put("color", item.getColor());
-                            arr.put(jsonaux);
-                            totalPagar = totalPagar + (item.getPrecio() * item.getCantidad());
-                        }
-
-
-                        //Se agrega listado de productos
-                        json.put("orderTotal", totalPagar);
-                        json.put("item", arr);
-
-                        new CheckoutTask().execute();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    subirPedido();
                 }
             else{
                 Toast.makeText(contextoActivity,"Faltan campos por ingresar o los campos son demasiado cortos", Toast.LENGTH_LONG).show();
             }
-        }});
+            }
+        });
+        btnPse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (validarFormulario()) {
+                    AlertDialog.Builder dialogo1 = new AlertDialog.Builder(contextoActivity);
+                    dialogo1.setTitle("SELECCIÓN DE BANCO");
+                    dialogo1.setCancelable(false);
+                    dialogo1.setItems(R.array.bancos, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Random random = new Random();
+                            if (random.nextBoolean()) {
+                                subirPedido();
+                            } else {
+                                Toast.makeText(contextoActivity, "Transaccción fallida", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+
+                    });
+                    dialogo1.setPositiveButton("Salir",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogo1, int id) {
+                                    return;
+                                }
+                            });
+                    AlertDialog dialog = dialogo1.create();
+                    dialog.show();
+
+
+                }else{
+                    Toast.makeText(contextoActivity,"Faltan campos por ingresar o los campos son demasiado cortos", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         return rootView;
     }
@@ -167,6 +167,7 @@ public class PagoFragment extends DialogFragment {
             dialog.dismiss();
             if(resultado.equals("1")){
                 dismiss();
+                contextoActivity.carrito.removeAll(contextoActivity.carrito);
                 Toast.makeText(contextoActivity,"pedido realizado con exito",Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(contextoActivity,"No se pudo guardar su pedido intente nuevamente",Toast.LENGTH_LONG).show();
@@ -212,4 +213,47 @@ public class PagoFragment extends DialogFragment {
         return true;
     }
 
+    private void subirPedido(){
+        JSONObject jsonaux = new JSONObject();
+        json = new JSONObject();
+        JSONArray arr = new JSONArray();
+
+        try {
+            json.put("firstName", editTextNombres.getText().toString());
+            json.put("lastName", editTextApellidos.getText().toString());
+            json.put("date", getFechaHora());
+            json.put("company", "UdeA");
+            json.put("address1", editTextDireccion1.getText().toString());
+            json.put("address2", editTextDireccion2.getText().toString());
+            json.put("city", "Medellin");
+            json.put("state", "Antioquia");
+            json.put("email", editTextEmail.getText().toString());
+            json.put("phone", editTextTelefono.getText().toString());
+            json.put("paym", "cod");
+            json.put("discount", "0");
+            json.put("shippingTax", "0");
+            json.put("recorded", "yes");
+            double totalPagar = 0;
+            for (ItemCarrito item : contextoActivity.carrito) {
+                jsonaux.put("name", item.getProducto().getNombre());
+                jsonaux.put("quantity", String.valueOf(item.getCantidad()));
+                jsonaux.put("productID", item.getProducto().getId());
+                jsonaux.put("varID", "0");
+                jsonaux.put("lineTotal", "50");
+                jsonaux.put("talla", item.getTalla());
+                jsonaux.put("color", item.getColor());
+                arr.put(jsonaux);
+                totalPagar = totalPagar + (item.getPrecio() * item.getCantidad());
+            }
+
+
+            //Se agrega listado de productos
+            json.put("orderTotal", totalPagar);
+            json.put("item", arr);
+
+            new CheckoutTask().execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

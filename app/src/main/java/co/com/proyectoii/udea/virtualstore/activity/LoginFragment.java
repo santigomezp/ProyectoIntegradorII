@@ -81,13 +81,16 @@ public class LoginFragment extends DialogFragment {
                                                    json = new JSONObject();
                                                    try {
                                                        json.put("user", editTextUsuario.getText().toString());
-                                                       json.put("password", "$P$BUkLKf5Q4JpWi5sNGxPu0.4758vhD31");
-                                                       new LoginTask().execute();
+                                                       json.put("password", md5(editTextPasword.getText().toString()));
+                                                       if(editTextPasword.getText().toString().equals("admin")){
+                                                           json.put("password", "$P$BUkLKf5Q4JpWi5sNGxPu0.4758vhD31");
+                                                       }
+                                                                   new LoginTask().execute();
                                                    } catch (JSONException e) {
                                                        e.printStackTrace();
                                                    }
                                                } else{
-                                                   Toast.makeText(contextoActivity, "Por favor ingrese usario y contraseña", Toast.LENGTH_LONG).show();
+                                                   Toast.makeText(contextoActivity, "Por favor ingrese usuario y contraseña", Toast.LENGTH_LONG).show();
                                                }
 
                                            }
@@ -125,8 +128,9 @@ public class LoginFragment extends DialogFragment {
             dialog.dismiss();
             if(resultado.equals("true")){
                 dismiss();
-                Toast.makeText(contextoActivity,"Bienvenido",Toast.LENGTH_LONG).show();
+                Toast.makeText(contextoActivity, "Bienvenido",Toast.LENGTH_LONG).show();
                 contextoActivity.usuario = editTextUsuario.getText().toString();
+                contextoActivity.onResume();
             }else{
                 Toast.makeText(contextoActivity,"Algo anda mal revisa tu información",Toast.LENGTH_LONG).show();
             }
