@@ -180,9 +180,16 @@ public class DetalleProductoFragment extends DialogFragment {
         btnImgAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                descargarImagen(imagenes.get(numeroImagen));
+                if (numeroImagen!=0) {
+                    descargarImagen(imagenes.get(numeroImagen));
+                }else{
+                    descargarImagen(producto.getIconoPorDefecto());
+                }
                 if (numeroImagen > 0) {
                     numeroImagen--;
+                }
+                else{
+                    Toast.makeText(contextoActivity,"No hay mas imágenes que mostrar",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -190,8 +197,10 @@ public class DetalleProductoFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 descargarImagen(imagenes.get(numeroImagen));
-                if (numeroImagen < imagenes.size()) {
+                if (numeroImagen < imagenes.size()-1) {
                     numeroImagen++;
+                }else{
+                    Toast.makeText(contextoActivity,"No hay mas imágenes que mostrar",Toast.LENGTH_LONG).show();
                 }
             }
         });
