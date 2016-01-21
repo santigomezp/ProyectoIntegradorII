@@ -102,7 +102,6 @@ public class JSONProductoParser {
                     if (l%5==0){
                         while (variacion.substring(variacion.length()-1, variacion.length()).equals(","))
                             variacion = variacion.substring(0, variacion.length()-1);
-                        System.out.println(variacion);
                         variaciones.add(variacion);
                         variacion = "";
                     }

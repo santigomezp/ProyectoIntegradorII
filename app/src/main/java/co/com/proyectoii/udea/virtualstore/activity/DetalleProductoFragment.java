@@ -208,7 +208,9 @@ public class DetalleProductoFragment extends DialogFragment {
      }
 
     private void descargarImagen(String url){
-        Picasso.with(contextoActivity).load(new ProductosHTTPClient().getURI(url)).into(imageViewImagen);
+        Picasso.with(contextoActivity).load(new ProductosHTTPClient().getURI(url))
+                .placeholder(R.drawable.ic_placeholder).error(R.drawable.ic_error_fallback)
+                .into(imageViewImagen);
     }
 
     @Override
