@@ -99,6 +99,8 @@ public class DetalleProductoFragment extends DialogFragment {
         if (posisionFinal == -1 & posisionIni == -1) {
             spinnerColor.setVisibility(View.GONE);
             spinnerTalla.setVisibility(View.GONE);
+            descargarImagen(producto.getIconoPorDefecto());
+            textViewPrecio.setText("" + producto.getPrecio());
         } else {
 
 

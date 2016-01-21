@@ -62,7 +62,10 @@ public class JSONProductoParser {
                         case "_price":
                             metaValue = metaValue.replace(".", "");
                             metaValue = metaValue.replace(",", "");
-                            producto.setPrecio(Double.parseDouble(metaValue));
+                            if(metaValue.length() <3){
+                                producto.setPrecio(Double.parseDouble(metaValue)*1000);
+                            } else
+                                producto.setPrecio(Double.parseDouble(metaValue));
                             break;
                         case "_stock":
                             if (metaValue.isEmpty()){
